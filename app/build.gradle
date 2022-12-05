@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -7,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.patient"
-        minSdk 21
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -30,8 +31,7 @@ android {
 }
 
 dependencies {
-    implementation 'live.videosdk:rtc-android-sdk:0.1.8'
-    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation ('org.jitsi.react:jitsi-meet-sdk:7.0.0') { transitive = true }
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'androidx.appcompat:appcompat:1.5.1'
