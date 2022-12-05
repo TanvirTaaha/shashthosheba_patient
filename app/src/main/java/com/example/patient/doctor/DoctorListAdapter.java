@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -69,11 +70,14 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
         }
         holder.binding.tvStatus.setTextColor(ResourcesCompat.getColor(mContext.getResources(), colorInt, mContext.getTheme()));
         holder.binding.getRoot().setOnClickListener(v -> {
-            mContext.startActivity(new Intent(mContext, MeetingActivity.class)
-                    .putExtra(IntentTag.DOCTOR_NAME.tag, doctor.getName())
-                    .putExtra(IntentTag.DOCTOR_UID.tag, doctor.getuId())
-                    .putExtra(IntentTag.DOCTOR_STATUS.tag, doctor.getStatus()));
-
+            if (doctor.getStatus().equals("online")) {
+                mContext.startActivity(new Intent(mContext, MeetingActivity.class)
+                        .putExtra(IntentTag.DOCTOR_NAME.tag, doctor.getName())
+                        .putExtra(IntentTag.DOCTOR_UID.tag, doctor.getuId())
+                        .putExtra(IntentTag.DOCTOR_STATUS.tag, doctor.getStatus()));
+            } else {
+                Toast.makeText(mContext, "This doctor is not online right now", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
