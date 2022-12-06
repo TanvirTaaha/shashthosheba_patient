@@ -1,4 +1,4 @@
-package com.example.patient;
+package com.shasthosheba.doctor;
 
 import org.jetbrains.annotations.NotNull;
 

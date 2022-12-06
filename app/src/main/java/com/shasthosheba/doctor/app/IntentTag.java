@@ -1,4 +1,4 @@
-package com.example.patient.app;
+package com.shasthosheba.doctor.app;
 
 public enum IntentTag {
     DOCTOR_NAME("doctor_name"),

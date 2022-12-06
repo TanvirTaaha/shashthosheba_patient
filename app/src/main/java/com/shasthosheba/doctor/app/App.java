@@ -1,10 +1,10 @@
-package com.example.patient.app;
+package com.shasthosheba.doctor.app;
 
 import android.app.Application;
 
-import com.example.patient.BuildConfig;
-import com.example.patient.R;
-import com.example.patient.TagTree;
+import com.shasthosheba.doctor.BuildConfig;
+import com.shasthosheba.doctor.R;
+import com.shasthosheba.doctor.TagTree;
 
 import timber.log.Timber;
 

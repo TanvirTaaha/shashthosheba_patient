@@ -8,54 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:441651925791:android:4127d2b7dec5de01eb162a",
+        "mobilesdk_app_id": "1:441651925791:android:bc3ea95d7cd0c741eb162a",
         "android_client_info": {
-          "package_name": "com.example.doctor"
+          "package_name": "com.shasthosheba.doctor"
         }
       },
       "oauth_client": [
         {
-          "client_id": "441651925791-c04ck6ri10f8s0hgglb9skallalmgcnm.apps.googleusercontent.com",
+          "client_id": "441651925791-na27919v6evn3t04dsbsc47qonqd65tr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.doctor",
-            "certificate_hash": "888d590787ef221b242d6ae34db5e8bfbad25d04"
-          }
-        },
-        {
-          "client_id": "441651925791-b4rmt3kq2ilu2145954r18u2h1819ggm.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCK63LL5vl6dykxNyMt0OmOAFubfl2ykc8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "441651925791-b4rmt3kq2ilu2145954r18u2h1819ggm.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:441651925791:android:00e0262f6148c306eb162a",
-        "android_client_info": {
-          "package_name": "com.example.patient"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "441651925791-pvabt3kkqj34daud32dfc7tbrn96eijh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.patient",
+            "package_name": "com.shasthosheba.doctor",
             "certificate_hash": "888d590787ef221b242d6ae34db5e8bfbad25d04"
           }
         },

@@ -1,4 +1,4 @@
-package com.example.patient.doctor;
+package com.shasthosheba.doctor.doctor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.patient.MeetingActivity;
-import com.example.patient.app.IntentTag;
-import com.example.patient.databinding.DoctorRcvItemBinding;
-import com.example.patient.model.Doctor;
+import com.shasthosheba.doctor.MeetingActivity;
+import com.shasthosheba.doctor.app.IntentTag;
+import com.shasthosheba.doctor.databinding.DoctorRcvItemBinding;
+import com.shasthosheba.doctor.model.Doctor;
 
 import java.util.ArrayList;
 import java.util.List;

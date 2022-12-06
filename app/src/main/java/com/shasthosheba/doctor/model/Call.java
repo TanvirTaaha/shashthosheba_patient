@@ -1,4 +1,4 @@
-package com.example.patient.model;
+package com.shasthosheba.doctor.model;
 
 public class Call {
     private String wants;

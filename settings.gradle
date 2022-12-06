@@ -16,5 +16,5 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "Patient"
+rootProject.name = "Shasthosheba_doctor"
 include ':app'

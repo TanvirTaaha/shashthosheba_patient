@@ -1,4 +1,4 @@
-package com.example.patient;
+package com.shasthosheba.doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.patient.app.PublicVariable;
-import com.example.patient.databinding.ActivityStartBinding;
-import com.example.patient.doctor.DoctorListAdapter;
-import com.example.patient.model.Doctor;
-import com.example.patient.model.Patient;
+import com.shasthosheba.doctor.app.PublicVariable;
+import com.shasthosheba.doctor.databinding.ActivityStartBinding;
+import com.shasthosheba.doctor.doctor.DoctorListAdapter;
+import com.shasthosheba.doctor.model.Doctor;
+import com.shasthosheba.doctor.model.Patient;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;

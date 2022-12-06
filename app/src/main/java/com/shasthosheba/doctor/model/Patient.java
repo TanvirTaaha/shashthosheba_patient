@@ -1,21 +1,17 @@
-package com.example.patient.model;
+package com.shasthosheba.doctor.model;
 
-import androidx.annotation.NonNull;
-
-import java.io.Serializable;
-
-public class Doctor implements Serializable {
+public class Patient {
     private String name;
     private String status;
     private String uId;
 
-    public Doctor( String uId, String name, String status) {
+    public Patient(String uId, String name, String status) {
         this.uId = uId;
         this.name = name;
         this.status = status;
     }
 
-    public Doctor() {
+    public Patient() {
     }
 
     public String getName() {
@@ -32,15 +28,6 @@ public class Doctor implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "Doctor{" +
-                "name='" + name + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 
     public String getuId() {

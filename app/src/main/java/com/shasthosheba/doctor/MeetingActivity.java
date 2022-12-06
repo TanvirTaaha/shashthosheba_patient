@@ -1,16 +1,16 @@
-package com.example.patient;
+package com.shasthosheba.doctor;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.patient.app.IntentTag;
-import com.example.patient.app.PublicVariable;
-import com.example.patient.databinding.ActivityMeetingBinding;
-import com.example.patient.model.Call;
-import com.example.patient.model.Doctor;
-import com.example.patient.model.Patient;
+import com.shasthosheba.doctor.app.IntentTag;
+import com.shasthosheba.doctor.app.PublicVariable;
+import com.shasthosheba.doctor.databinding.ActivityMeetingBinding;
+import com.shasthosheba.doctor.model.Call;
+import com.shasthosheba.doctor.model.Doctor;
+import com.shasthosheba.doctor.model.Patient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
