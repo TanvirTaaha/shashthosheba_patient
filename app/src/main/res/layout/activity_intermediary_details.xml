@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/doctor_background_low_opacity"
+    tools:context=".intermediary.IntermediaryDetailsActivity">
+
+    <Button
+        android:id="@+id/btn_video_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="32dp"
+        android:drawableLeft="@android:drawable/presence_video_online"
+        android:text="@string/video" />
+
+    <Button
+        android:id="@+id/btn_audio_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginVertical="16dp"
+        android:layout_marginEnd="32dp"
+        android:drawableLeft="@android:drawable/presence_audio_online"
+        android:text="@string/audio" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_intermediary_patients_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_video_call"
+        android:layout_marginHorizontal="16dp"
+        tools:listitem="@layout/rcv_intermediary_patient_item" />
+</RelativeLayout>

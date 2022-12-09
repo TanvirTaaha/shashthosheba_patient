@@ -1,14 +1,19 @@
 package com.shasthosheba.doctor.model;
 
-public class Patient {
-    private String name;
-    private String status;
-    private String uId;
+import java.io.Serializable;
+import java.util.List;
 
-    public Patient(String uId, String name, String status) {
-        this.uId = uId;
+public class Patient extends BaseModel {
+    private String name;
+    private int birthYear;
+    private List<String> prescriptionIds;
+    private String id;
+
+    public Patient(String name, int birthYear, List<String> prescriptionIds, String id) {
         this.name = name;
-        this.status = status;
+        this.birthYear = birthYear;
+        this.prescriptionIds = prescriptionIds;
+        this.id = id;
     }
 
     public Patient() {
@@ -22,19 +27,27 @@ public class Patient {
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
+    public int getBirthYear() {
+        return birthYear;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
     }
 
-    public String getuId() {
-        return uId;
+    public List<String> getPrescriptionIds() {
+        return prescriptionIds;
     }
 
-    public void setuId(String uId) {
-        this.uId = uId;
+    public void setPrescriptionIds(List<String> prescriptionIds) {
+        this.prescriptionIds = prescriptionIds;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

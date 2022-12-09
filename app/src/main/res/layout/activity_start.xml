@@ -1,69 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".StartActivity">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ll_doc_list"
+    <ImageView
+        android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:visibility="visible">
+        android:scaleType="centerCrop"
+        android:src="@drawable/doctor_background_low_opacity" />
 
-        <Button
-            android:id="@+id/btn_sign_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign out"
-            android:layout_gravity="end"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="32dp"/>
+    <TextView
+        android:id="@+id/tv_connecting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/progress_bar"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="28sp"
+        android:text="@string/connecting" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:text="Available Doctors"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="18sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_docs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            tools:listitem="@layout/doctor_rcv_item" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <RelativeLayout
-        android:id="@+id/rl_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_above="@id/btn_sign_in"
-            android:text="You are not signed in"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="24sp"
-            android:layout_margin="32dp"/>
-
-        <Button
-            android:id="@+id/btn_sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Sign in" />
-    </RelativeLayout>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>

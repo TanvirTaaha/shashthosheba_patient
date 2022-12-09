@@ -6,61 +6,51 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.app.AppCompatDelegate;
 
-import com.shasthosheba.doctor.app.PublicVariable;
-import com.shasthosheba.doctor.databinding.ActivityStartBinding;
-import com.shasthosheba.doctor.doctor.DoctorListAdapter;
-import com.shasthosheba.doctor.model.Doctor;
-import com.shasthosheba.doctor.model.Patient;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.shasthosheba.doctor.app.PreferenceManager;
+import com.shasthosheba.doctor.app.PublicVariables;
+import com.shasthosheba.doctor.databinding.ActivityStartBinding;
+import com.shasthosheba.doctor.intermediary.IntermediaryListActivity;
+import com.shasthosheba.doctor.model.User;
+import com.shasthosheba.doctor.util.Utils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import timber.log.Timber;
 
 public class StartActivity extends AppCompatActivity {
 
     private ActivityStartBinding binding;
-    private List<Doctor> doctors;
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             this::onSignInResult
     );
 
-    FirebaseDatabase fireDB = FirebaseDatabase.getInstance(PublicVariable.FIREBASE_DB);
+
+    PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         binding = ActivityStartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
+        preferenceManager = new PreferenceManager(this);
         FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             if (firebaseUser == null) { // Not Signed in
-                binding.rlSignIn.setVisibility(View.VISIBLE);
-                binding.llDocList.setVisibility(View.GONE);
-
-
                 List<AuthUI.IdpConfig> providers = Arrays.asList(
                         new AuthUI.IdpConfig.EmailBuilder().build(),
                         new AuthUI.IdpConfig.GoogleBuilder().build()
@@ -72,72 +62,52 @@ public class StartActivity extends AppCompatActivity {
                         .setAvailableProviders(providers)
                         .build();
 
-                binding.btnSignIn.setOnClickListener(v -> signInLauncher.launch(signInIntent));
+                signInLauncher.launch(signInIntent);
 
             } else { //Signed in
-                binding.rlSignIn.setVisibility(View.GONE);
-                binding.llDocList.setVisibility(View.VISIBLE);
-
-                DatabaseReference dataRefDoctor = fireDB.getReference("doctors");
-
-                DatabaseReference dataRefPatient = fireDB.getReference("patients");
-
-                Patient patient = new Patient(firebaseUser.getUid(), firebaseUser.getDisplayName(), "online");
-                dataRefPatient.child(firebaseUser.getUid()).setValue(patient);
-
-                binding.btnSignOut.setOnClickListener(v -> {
-                    patient.setStatus("offline");
-                    dataRefPatient.child(firebaseUser.getUid()).setValue(patient)
-                            .addOnCompleteListener(task -> FirebaseAuth.getInstance().signOut());
-                });
-
-                dataRefDoctor.get().addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        Timber.e(task.getException());
-                    } else {
-                        Timber.d(Objects.requireNonNull(task.getResult().getValue(Doctor.class)).toString());
-                    }
-                });
-
-                DoctorListAdapter adapter = new DoctorListAdapter(this);
-                binding.rcvDocs.setAdapter(adapter);
-                binding.rcvDocs.setLayoutManager(new LinearLayoutManager(this));
-
-                dataRefDoctor.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Timber.d("Changed");
-                        adapter.clear();
-                        adapter.notifyDataSetChanged();
-                        for (DataSnapshot data : snapshot.getChildren()) {
-                            adapter.add(data.getValue(Doctor.class));
-                            adapter.notifyItemInserted(adapter.getItemCount() - 1);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Timber.w(error.toException(), "Couldn't load doctors");
-                    }
-                });
-
-
+                handleAfterSignIn();
             }
         });
 
 
     }
 
+    private void handleAfterSignIn() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), "online");
+        Timber.d("User:%s", user);
+
+        if (preferenceManager.isConnected()) {
+            binding.tvConnecting.setText(getString(R.string.connecting));
+            binding.progressBar.setVisibility(View.VISIBLE);
+            FirebaseDatabase
+                    .getInstance(PublicVariables.FIREBASE_DB)
+                    .getReference(PublicVariables.DOCTOR_KEY).child(user.getuId()).setValue(user)
+                    .addOnSuccessListener(unused -> {
+                        Timber.d("launching list activity");
+                        startActivity(new Intent(StartActivity.this, IntermediaryListActivity.class));
+                    })
+                    .addOnFailureListener(Timber::e);
+            Toast.makeText(this, "Signed in successfully", Toast.LENGTH_LONG).show();
+            preferenceManager.setDoctor(user);
+        } else {
+            binding.tvConnecting.setText(R.string.connection_lost);
+            binding.progressBar.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Utils.setStatusOnline(this);
+    }
+
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             //Successfully signed in
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            Patient patient = new Patient(firebaseUser.getUid(), firebaseUser.getDisplayName(), "online");
-            FirebaseDatabase
-                    .getInstance(PublicVariable.FIREBASE_DB)
-                    .getReference("patients").child(patient.getuId()).setValue(patient);
-            Toast.makeText(this, "Signed in successfully", Toast.LENGTH_LONG).show();
+            handleAfterSignIn();
             Timber.d("Logged in");
         } else {
             if (response != null) {

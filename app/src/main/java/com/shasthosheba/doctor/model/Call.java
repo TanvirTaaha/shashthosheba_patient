@@ -4,16 +4,16 @@ public class Call {
     private String wants;
     private boolean video;
     private String room;
-    private String patient;
+    private String doctor;
 
     public Call() {
     }
 
-    public Call(String wants, boolean video, String room, String patient) {
+    public Call(String wants, boolean video, String room, String doctor) {
         this.wants = wants;
         this.video = video;
         this.room = room;
-        this.patient = patient;
+        this.doctor = doctor;
     }
 
     public boolean isVideo() {
@@ -40,11 +40,11 @@ public class Call {
         this.room = room;
     }
 
-    public String getPatient() {
-        return patient;
+    public String getDoctor() {
+        return doctor;
     }
 
-    public void setPatient(String patient) {
-        this.patient = patient;
+    public void setDoctor(String doctor) {
+        this.doctor = doctor;
     }
 }

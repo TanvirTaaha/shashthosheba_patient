@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Doctor</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="connecting">Connecting…</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="doctor">Doctor:</string>
+    <string name="patient">Patient:</string>
+    <string name="illness">Illness</string>
+    <string name="advice">Advice</string>
+    <string name="medicines">Medicines</string>
+    <string name="tests">Tests</string>
+    <string name="save">Save</string>
 </resources>

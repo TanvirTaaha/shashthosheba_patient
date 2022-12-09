@@ -12,10 +12,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Patient"
+        android:theme="@style/Theme.Patient.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".MeetingActivity"
+            android:name=".prescription.PrescriptionViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".prescription.PrescriptionCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".prescription.PrescriptionListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".intermediary.IntermediaryDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".intermediary.IntermediaryListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".meeting.MeetingActivity"
             android:exported="false" />
         <activity
             android:name=".StartActivity"
