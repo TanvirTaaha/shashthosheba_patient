@@ -21,6 +21,9 @@ import timber.log.Timber;
 public class Utils {
     public static void setStatusOnline(Context context) {
         User user = new PreferenceManager(context).getDoctor();
+        if (user == null || user.getuId() == null ||user.getuId().isEmpty()) {
+            return;
+        }
         user.setStatus("online");
         DatabaseReference dataRef = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB).getReference(PublicVariables.DOCTOR_KEY);
         DatabaseReference conRef = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB).getReference(".info/connected");
