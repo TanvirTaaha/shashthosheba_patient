@@ -73,9 +73,15 @@ public class IntermediaryListAdapter extends RecyclerView.Adapter<IntermediaryLi
                 mContext.startActivity(new Intent(mContext, IntermediaryDetailsActivity.class)
                         .putExtra(IntentTags.INTERMEDIARY_NAME.tag, user.getName())
                         .putExtra(IntentTags.INTERMEDIARY_UID.tag, user.getuId())
-                        .putExtra(IntentTags.INTERMEDIARY_STATUS.tag, user.getStatus()));
+                        .putExtra(IntentTags.INTERMEDIARY_STATUS.tag, user.getStatus())
+                        .putExtra(IntentTags.INTERMEDIARY_CALL_ENABLED.tag, true));
             } else {
-                Toast.makeText(mContext, "This org is not online right now", Toast.LENGTH_LONG).show();
+                mContext.startActivity(new Intent(mContext, IntermediaryDetailsActivity.class)
+                        .putExtra(IntentTags.INTERMEDIARY_NAME.tag, user.getName())
+                        .putExtra(IntentTags.INTERMEDIARY_UID.tag, user.getuId())
+                        .putExtra(IntentTags.INTERMEDIARY_STATUS.tag, user.getStatus())
+                        .putExtra(IntentTags.INTERMEDIARY_CALL_ENABLED.tag, false));
+//                Toast.makeText(mContext, "This org is not online right now", Toast.LENGTH_LONG).show();
             }
         });
     }

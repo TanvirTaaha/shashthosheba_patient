@@ -52,12 +52,14 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
         binding.rcvIntermediaryPatientsList.setAdapter(adapter);
 
         if (!preferenceManager.isConnected()) {
-            Toast.makeText(this, "Connection problem", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Not connected to server", Toast.LENGTH_LONG).show();
             Timber.e("firebase is not connected");
+            finish();
         } else if (getIntent().hasExtra(IntentTags.INTERMEDIARY_UID.tag)) {
             adapter.setFetchDone(false);
             String intermediaryId = getIntent().getStringExtra(IntentTags.INTERMEDIARY_UID.tag);
             adapter.setIntermediaryId(intermediaryId);
+            showCallButtons(getIntent().getBooleanExtra(IntentTags.INTERMEDIARY_CALL_ENABLED.tag, false));
             firestore.collection(PublicVariables.INTERMEDIARY_KEY).document(intermediaryId)
                     .addSnapshotListener((value, error) -> {
                         if (error != null) {
@@ -73,16 +75,14 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
                             fetchPatients(intermediary);
                         }
                     });
-
         } else {
             Toast.makeText(this, "Something wrong", Toast.LENGTH_LONG).show();
             Timber.e("no intermediary id found on intent");
         }
-
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
+    //Separated in a method just to reduce clutter
     private void fetchPatients(Intermediary intermediary) {
         assert intermediary != null;
         if (intermediary.getPatients() != null && !intermediary.getPatients().isEmpty()) {
@@ -104,6 +104,16 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
                         }).addOnFailureListener(Timber::e);
             }
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void showCallButtons(boolean show) {
+        if (show) {
+            binding.btnVideoCall.setVisibility(View.VISIBLE);
+            binding.btnAudioCall.setVisibility(View.VISIBLE);
+        } else {
+            binding.btnVideoCall.setVisibility(View.INVISIBLE);
+            binding.btnAudioCall.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -5,6 +5,7 @@ public enum IntentTags {
     INTERMEDIARY_UID("doctor_uid"),
     INTERMEDIARY_STATUS("doctor_status"),
     DOCTOR("doctor_object"),
+    INTERMEDIARY_CALL_ENABLED("intermediary_call_enabled"),
 
     PATIENT_ID("patient_id"),
     PATIENT_PRES_ID_LIST("patient_prescription_id_list"),

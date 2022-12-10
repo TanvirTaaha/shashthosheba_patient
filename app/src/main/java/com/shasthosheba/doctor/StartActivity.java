@@ -97,7 +97,7 @@ public class StartActivity extends AppCompatActivity {
                         StartActivity.this.finish();
                     })
                     .addOnFailureListener(Timber::e);
-            Toast.makeText(this, "Signed in successfully", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Signed in successfully", Toast.LENGTH_LONG).show();
             preferenceManager.setDoctor(user);
         } else {
             showConnectedProgress(false);
