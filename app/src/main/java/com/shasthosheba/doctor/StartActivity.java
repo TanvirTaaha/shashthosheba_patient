@@ -2,6 +2,7 @@ package com.shasthosheba.doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.shasthosheba.doctor.util.Utils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
 
 import timber.log.Timber;
 
@@ -77,6 +79,8 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
+    private boolean retried = false;
+
     private void handleAfterSignIn() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         User user = new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), "online");
@@ -90,12 +94,19 @@ public class StartActivity extends AppCompatActivity {
                     .addOnSuccessListener(unused -> {
                         Timber.d("launching list activity");
                         startActivity(new Intent(StartActivity.this, IntermediaryListActivity.class));
+                        StartActivity.this.finish();
                     })
                     .addOnFailureListener(Timber::e);
             Toast.makeText(this, "Signed in successfully", Toast.LENGTH_LONG).show();
             preferenceManager.setDoctor(user);
         } else {
             showConnectedProgress(false);
+            new Handler().postDelayed(() -> {
+                if (!retried) {
+                    retried = true;
+                    handleAfterSignIn();
+                }
+            }, 1000);
         }
 
     }
