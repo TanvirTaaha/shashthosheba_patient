@@ -59,6 +59,7 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
             adapter.setFetchDone(false);
             String intermediaryId = getIntent().getStringExtra(IntentTags.INTERMEDIARY_UID.tag);
             adapter.setIntermediaryId(intermediaryId);
+            binding.tvIntermediaryName.setText(getIntent().getStringExtra(IntentTags.INTERMEDIARY_NAME.tag));
             showCallButtons(getIntent().getBooleanExtra(IntentTags.INTERMEDIARY_CALL_ENABLED.tag, false));
             firestore.collection(PublicVariables.INTERMEDIARY_KEY).document(intermediaryId)
                     .addSnapshotListener((value, error) -> {
