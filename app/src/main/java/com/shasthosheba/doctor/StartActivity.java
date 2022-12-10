@@ -65,6 +65,11 @@ public class StartActivity extends AppCompatActivity {
                 signInLauncher.launch(signInIntent);
 
             } else { //Signed in
+                showConnectedProgress(true);
+                preferenceManager.setDoctor(
+                        new User(firebaseAuth.getUid(),
+                                firebaseAuth.getCurrentUser().getDisplayName(),
+                                "offline"));
                 handleAfterSignIn();
             }
         });
@@ -78,8 +83,7 @@ public class StartActivity extends AppCompatActivity {
         Timber.d("User:%s", user);
 
         if (preferenceManager.isConnected()) {
-            binding.tvConnecting.setText(getString(R.string.connecting));
-            binding.progressBar.setVisibility(View.VISIBLE);
+            showConnectedProgress(true);
             FirebaseDatabase
                     .getInstance(PublicVariables.FIREBASE_DB)
                     .getReference(PublicVariables.DOCTOR_KEY).child(user.getuId()).setValue(user)
@@ -91,8 +95,7 @@ public class StartActivity extends AppCompatActivity {
             Toast.makeText(this, "Signed in successfully", Toast.LENGTH_LONG).show();
             preferenceManager.setDoctor(user);
         } else {
-            binding.tvConnecting.setText(R.string.connection_lost);
-            binding.progressBar.setVisibility(View.INVISIBLE);
+            showConnectedProgress(false);
         }
 
     }
@@ -103,10 +106,25 @@ public class StartActivity extends AppCompatActivity {
         Utils.setStatusOnline(this);
     }
 
+    private void showConnectedProgress(boolean connected) {
+        if (connected) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.tvConnecting.setText(R.string.connecting);
+        } else { // Show connection lost
+            binding.progressBar.setVisibility(View.INVISIBLE);
+            binding.tvConnecting.setText(R.string.connection_lost);
+        }
+    }
+
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             //Successfully signed in
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (firebaseUser != null) {
+                showConnectedProgress(true);
+                preferenceManager.setDoctor(new User(firebaseUser.getUid(), firebaseUser.getDisplayName(), "online"));
+            }
             handleAfterSignIn();
             Timber.d("Logged in");
         } else {
