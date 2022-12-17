@@ -6,4 +6,5 @@ public class PublicVariables {
     public static final String DOCTOR_KEY="doctors";
     public static final String PATIENTS_KEY="patients";
     public static final String PRESCRIPTION_KEY="prescriptions";
+    public static final String PATIENT_PRESCRIPTION_IDs = "prescriptionIds";
 }

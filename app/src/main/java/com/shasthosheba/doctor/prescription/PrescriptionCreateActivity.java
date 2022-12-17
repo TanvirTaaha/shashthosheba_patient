@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.shasthosheba.doctor.app.IntentTags;
@@ -119,7 +121,7 @@ public class PrescriptionCreateActivity extends AppCompatActivity {
             prescription.setMedicines(medAdapter.mList);
             prescription.setTests(testAdapter.mList);
 
-            alertDialog.show();
+
             firestore.collection(PublicVariables.PRESCRIPTION_KEY).add(prescription)
                     .addOnSuccessListener(documentReference -> {
                         Timber.d("prescription:%s", prescription);
@@ -127,14 +129,22 @@ public class PrescriptionCreateActivity extends AppCompatActivity {
                         prescription.setId(documentReference.getId());
                         documentReference.set(prescription).addOnSuccessListener(unused -> {
                             Timber.d("Successfully saved presc with id:%s", prescription);
-                            if (patient.getPrescriptionIds() == null){
-                                patient.setPrescriptionIds(new ArrayList<>());
-                            }
-                            patient.getPrescriptionIds().add(prescription.getId());
-                            firestore.collection(PublicVariables.PATIENTS_KEY).document(patient.getId()).set(patient)
-                                    .addOnSuccessListener(unused1 -> {
-                                        Timber.d("Patient %s, updated with presc id:%s, new ids:%s",
-                                                patient.getId(), prescription.getId(), patient.getPrescriptionIds());
+//                            if (patient.getPrescriptionIds() == null){
+//                                patient.setPrescriptionIds(new ArrayList<>());
+//                            }
+//                            patient.getPrescriptionIds().add(prescription.getId());
+//                            firestore.collection(PublicVariables.PATIENTS_KEY).document(patient.getId()).set(patient)
+//                                    .addOnSuccessListener(unused1 -> {
+//                                        Timber.d("Patient %s, updated with presc id:%s, new ids:%s",
+//                                                patient.getId(), prescription.getId(), patient.getPrescriptionIds());
+//                                        finish();
+//                                    })
+//                                    .addOnFailureListener(Timber::e);
+                            firestore.collection(PublicVariables.PATIENTS_KEY).document(patient.getId())
+                                    .update(PublicVariables.PATIENT_PRESCRIPTION_IDs, FieldValue.arrayUnion(prescription.getId()))
+                                    .addOnSuccessListener(unused12 -> {
+                                        Timber.d("Patient %s, updated with presc id:%s",
+                                                patient.getId(), prescription.getId());
                                         finish();
                                     })
                                     .addOnFailureListener(Timber::e);

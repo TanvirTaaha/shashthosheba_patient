@@ -42,6 +42,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Add prescription" />
+        android:text="@string/add_prescription" />
+
+    <ImageView
+        android:id="@+id/iv_empty_list_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="Icon indicating list is empty"
+        android:src="@drawable/ic_round_hourglass_empty_black_24"
+        android:visibility="gone"
+        app:tint="#80000000"
+        tools:ignore="HardcodedText" />
 
 </RelativeLayout>

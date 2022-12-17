@@ -11,4 +11,5 @@
     <string name="medicines">Medicines</string>
     <string name="tests">Tests</string>
     <string name="save">Save</string>
+    <string name="add_prescription">Add prescription</string>
 </resources>
