@@ -59,7 +59,7 @@ public class IntermediaryListActivity extends AppCompatActivity {
         });
 
         binding.ibSignOut.setOnClickListener(v -> {
-            User user = new PreferenceManager(IntermediaryListActivity.this).getDoctor();
+            User user = new PreferenceManager(IntermediaryListActivity.this).getUser();
             user.setStatus("offline");
             rtDB.getReference(PublicVariables.DOCTOR_KEY).child(user.getuId()).setValue(user)
                     .addOnCompleteListener(task -> {

@@ -11,7 +11,7 @@ public class PreferenceManager {
     private static final String PREFERENCE_STORAGE = "shasthosheba_pref_storage";
 
     public static enum PreferenceKey {
-        DOCTOR("doctor"),
+        USER("user"),
         INTERMEDIARY("intermediary"),
         CONNECTED("is_connected");
 
@@ -35,12 +35,12 @@ public class PreferenceManager {
         preferences = context.getSharedPreferences(PREFERENCE_STORAGE, Context.MODE_PRIVATE);
     }
 
-    public void setDoctor(User user) {
-        preferences.edit().putString(PreferenceKey.DOCTOR.key, mGson.toJson(user)).apply();
+    public void setUser(User user) {
+        preferences.edit().putString(PreferenceKey.USER.key, mGson.toJson(user)).apply();
     }
 
-    public User getDoctor() {
-        return mGson.fromJson(preferences.getString(PreferenceKey.DOCTOR.key, ""), User.class);
+    public User getUser() {
+        return mGson.fromJson(preferences.getString(PreferenceKey.USER.key, ""), User.class);
     }
 
     public void setConnected(boolean connected) {

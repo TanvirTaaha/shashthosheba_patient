@@ -119,7 +119,7 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
     }
 
     private void setupCall(Intermediary intermediary) {
-        User user = preferenceManager.getDoctor();
+        User user = preferenceManager.getUser();
         URL serverUrl;
         try {
             serverUrl = new URL("https://meet.jit.si");

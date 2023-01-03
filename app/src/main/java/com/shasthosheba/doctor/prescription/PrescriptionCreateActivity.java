@@ -56,7 +56,7 @@ public class PrescriptionCreateActivity extends AppCompatActivity {
         Timber.d("patient from intent:%s", patient);
         Intermediary intermediary = new Gson().fromJson(getIntent().getStringExtra(IntentTags.PRESC_INTERMEDIARY_OBJ.tag), Intermediary.class);
         Timber.d("intermediary from intent:%s", intermediary);
-        User user = preferenceManager.getDoctor();
+        User user = preferenceManager.getUser();
 
         binding.tvDocName.setText(user.getName());
         binding.tvPatientName.setText(patient.getName());

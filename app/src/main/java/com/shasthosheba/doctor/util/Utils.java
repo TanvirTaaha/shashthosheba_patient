@@ -22,22 +22,10 @@ public class Utils {
     public static void setStatusOnline(Context context) {
         DatabaseReference dataRef = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB).getReference(PublicVariables.DOCTOR_KEY);
         DatabaseReference conRef = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB).getReference(".info/connected");
-        User user = new PreferenceManager(context).getDoctor();
-        if (user == null || user.getuId() == null ||user.getuId().isEmpty()) {
+        User user = new PreferenceManager(context).getUser();
+        if (user == null || user.getuId() == null || user.getuId().isEmpty()) {
             Timber.d("User is null");
-            Timber.d("Only setting connected/no_connected");
-            conRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Timber.d(".info/connected:%s", snapshot.getValue());
-                    new PreferenceManager(context).setConnected(Boolean.TRUE.equals(snapshot.getValue(Boolean.class)));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Timber.e(error.toException());
-                }
-            });
+            Timber.d("returning from setStatusOnline...");
             return;
         }
         user.setStatus("online");
@@ -46,22 +34,22 @@ public class Utils {
                         Timber.i("util:updated status online"))
                 .addOnFailureListener(Timber::e);
 
-        conRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Timber.d(".info/connected:%s", snapshot.getValue());
-                if (Boolean.FALSE.equals(snapshot.getValue(Boolean.class))) { //NOT CONNECTED
-                    user.setStatus("offline");
-                    dataRef.child(user.getuId()).onDisconnect().setValue(user);
-                }
-                new PreferenceManager(context).setConnected(Boolean.TRUE.equals(snapshot.getValue(Boolean.class)));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Timber.e(error.toException());
-            }
-        });
+//        conRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Timber.d(".info/connected:%s", snapshot.getValue());
+//                if (Boolean.FALSE.equals(snapshot.getValue(Boolean.class))) { //NOT CONNECTED
+//                    user.setStatus("offline");
+//                    dataRef.child(user.getuId()).onDisconnect().setValue(user);
+//                }
+//                new PreferenceManager(context).setConnected(Boolean.TRUE.equals(snapshot.getValue(Boolean.class)));
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Timber.e(error.toException());
+//            }
+//        });
     }
 
 }

@@ -12,4 +12,5 @@
     <string name="tests">Tests</string>
     <string name="save">Save</string>
     <string name="add_prescription">Add prescription</string>
+    <string name="not_connected">Not connected</string>
 </resources>
