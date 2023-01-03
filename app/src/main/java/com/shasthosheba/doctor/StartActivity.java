@@ -2,6 +2,7 @@ package com.shasthosheba.doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
@@ -44,6 +45,7 @@ import com.shasthosheba.doctor.util.Utils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
@@ -92,6 +94,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void showConnectedProgress(boolean connected) {
+        Timber.d("Showing sign in fields");
         if (connected) {
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.tvConnecting.setText(R.string.connecting);
@@ -102,6 +105,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void hideSignInFields(boolean connected) {
+        Timber.d("Hiding sign in fields");
         binding.llSignInFields.setVisibility(View.INVISIBLE);
         binding.rlConnectionViews.setVisibility(View.VISIBLE);
         showConnectedProgress(connected);
@@ -114,9 +118,12 @@ public class StartActivity extends AppCompatActivity {
         binding.pbSignIn.setVisibility(View.INVISIBLE);
         binding.btnSignIn.setOnClickListener(v -> {
             if (!timerFinished) {
+                Timber.d("Timer is not finished");
+                binding.tvTimer.setVisibility(View.VISIBLE);
                 return;
             } else {
-                startTimer();
+                Timber.d("Timer finished");
+                startTimer(5);
             }
             binding.tvPassDoesntMatch.setVisibility(View.GONE);
             String tx_email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
@@ -138,6 +145,7 @@ public class StartActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         binding.pbSignIn.setVisibility(View.INVISIBLE);
                         if (task.isSuccessful()) {
+                            Timber.d("signInWithEmailAndPassword:Login successful");
                             Snackbar.make(binding.getRoot(), "Login Successful", Snackbar.LENGTH_LONG).show();
                             handleAfterSignIn();
                         } else {
@@ -154,10 +162,25 @@ public class StartActivity extends AppCompatActivity {
         });
     }
 
-    private void startTimer() {
+    private void startTimer(long seconds) {
+        Timber.d("Starting timer for %s sec", seconds);
+        if (!timerFinished) return;
         timerFinished = false;
-        new Handler().postDelayed((Runnable) () -> timerFinished = true,
-                TimeUnit.SECONDS.toMillis(2));
+        new CountDownTimer(TimeUnit.SECONDS.toMillis(seconds), 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerFinished = false;
+                Timber.d("onTick:%s", ((millisUntilFinished / 500) + 1));
+                binding.tvTimer.setText(String.format(Locale.getDefault(), "wait for %s", ((millisUntilFinished / 500) + 1)));
+            }
+
+            @Override
+            public void onFinish() {
+                timerFinished = true;
+                binding.tvTimer.setText("");
+                binding.tvTimer.setVisibility(View.GONE);
+            }
+        }.start();
     }
 
     private void launchFirebaseAuthUi() {
