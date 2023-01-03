@@ -10,24 +10,116 @@
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="layout background of a doctor"
         android:scaleType="centerCrop"
-        android:src="@drawable/doctor_background_low_opacity" />
+        android:src="@drawable/doctor_background_low_opacity"
+        tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/tv_connecting"
+    <RelativeLayout
+        android:id="@+id/rl_connection_views"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/progress_bar"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/primary_text_light"
-        android:textSize="28sp"
-        android:text="@string/connecting" />
+        android:layout_centerInParent="true"
+        android:padding="16dp"
+        tools:visibility="invisible">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_connecting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/connecting"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="28sp" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_connecting"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_sign_in_fields"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/rounded_rect_with_tint_bg"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="invisible"
+        tools:visibility="visible">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/sign_in_with_your_doctor_account"
+            android:textColor="@android:color/primary_text_light" />
+
+        <TextView
+            android:id="@+id/tv_pass_doesnt_match"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/this_email_and_password_does_not_match"
+            android:textColor="@android:color/holo_red_light"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ProgressBar
+            android:id="@+id/pb_sign_in"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:textColorHint="@android:color/primary_text_light"
+            app:boxStrokeColor="@android:color/secondary_text_light">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/primary_text_light" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:textColorHint="@android:color/secondary_text_light"
+            app:boxStrokeColor="@android:color/secondary_text_light"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@android:color/tertiary_text_light">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiet_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@android:color/primary_text_light" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/sign_in" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </RelativeLayout>

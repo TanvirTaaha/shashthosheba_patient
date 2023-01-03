@@ -3,6 +3,7 @@ package com.shasthosheba.doctor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,7 +17,16 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +44,9 @@ import com.shasthosheba.doctor.util.Utils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
 
@@ -48,7 +60,8 @@ public class StartActivity extends AppCompatActivity {
     );
 
 
-    PreferenceManager preferenceManager;
+    private PreferenceManager preferenceManager;
+    private boolean timerFinished = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,21 +74,11 @@ public class StartActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             if (firebaseUser == null) { // Not Signed in
-                List<AuthUI.IdpConfig> providers = Arrays.asList(
-                        new AuthUI.IdpConfig.EmailBuilder().build(),
-                        new AuthUI.IdpConfig.GoogleBuilder().build()
-                );
-                Intent signInIntent = AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAlwaysShowSignInMethodScreen(true)
-                        .setIsSmartLockEnabled(false)
-                        .setAvailableProviders(providers)
-                        .build();
-
-                signInLauncher.launch(signInIntent);
-
+//                launchFirebaseAuthUi();
+                showSignInFields();
             } else { //Signed in
-                showConnectedProgress(true);
+                // showConnectedProgress(true); is handled inside hideSignInFields()
+                hideSignInFields(true);
                 preferenceManager.setUser(
                         new User(firebaseAuth.getUid(),
                                 firebaseAuth.getCurrentUser().getDisplayName(),
@@ -86,6 +89,90 @@ public class StartActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void showConnectedProgress(boolean connected) {
+        if (connected) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.tvConnecting.setText(R.string.connecting);
+        } else { // Show connection lost
+            binding.progressBar.setVisibility(View.INVISIBLE);
+            binding.tvConnecting.setText(R.string.not_connected);
+        }
+    }
+
+    private void hideSignInFields(boolean connected) {
+        binding.llSignInFields.setVisibility(View.INVISIBLE);
+        binding.rlConnectionViews.setVisibility(View.VISIBLE);
+        showConnectedProgress(connected);
+    }
+
+    private void showSignInFields() {
+        binding.llSignInFields.setVisibility(View.VISIBLE);
+        binding.rlConnectionViews.setVisibility(View.INVISIBLE);
+
+        binding.pbSignIn.setVisibility(View.INVISIBLE);
+        binding.btnSignIn.setOnClickListener(v -> {
+            if (!timerFinished) {
+                return;
+            } else {
+                startTimer();
+            }
+            binding.tvPassDoesntMatch.setVisibility(View.GONE);
+            String tx_email = Objects.requireNonNull(binding.tietEmail.getText()).toString().trim();
+            String tx_pass = Objects.requireNonNull(binding.tietPassword.getText()).toString();
+            if (!Utils.isValidEmail(tx_email)) {
+                binding.tilEmail.setError("Enter a valid email");
+                return;
+            } else {
+                binding.tilEmail.setErrorEnabled(false);
+            }
+            if (TextUtils.isEmpty(tx_pass)) {
+                binding.tilPassword.setError("Password can't be empty");
+                return;
+            } else {
+                binding.tilPassword.setErrorEnabled(false);
+            }
+            binding.pbSignIn.setVisibility(View.VISIBLE);
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(tx_email, tx_pass)
+                    .addOnCompleteListener(task -> {
+                        binding.pbSignIn.setVisibility(View.INVISIBLE);
+                        if (task.isSuccessful()) {
+                            Snackbar.make(binding.getRoot(), "Login Successful", Snackbar.LENGTH_LONG).show();
+                            handleAfterSignIn();
+                        } else {
+                            Timber.e(task.getException());
+                            if (task.getException() instanceof FirebaseTooManyRequestsException) {
+                                binding.tvPassDoesntMatch.setText(R.string.too_many_retries);
+                                binding.tvPassDoesntMatch.setVisibility(View.VISIBLE);
+                            } else if (task.getException() instanceof FirebaseAuthException) {
+                                binding.tvPassDoesntMatch.setText(R.string.this_email_and_password_does_not_match);
+                                binding.tvPassDoesntMatch.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+        });
+    }
+
+    private void startTimer() {
+        timerFinished = false;
+        new Handler().postDelayed((Runnable) () -> timerFinished = true,
+                TimeUnit.SECONDS.toMillis(2));
+    }
+
+    private void launchFirebaseAuthUi() {
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build()
+        );
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAlwaysShowSignInMethodScreen(true)
+                .setIsSmartLockEnabled(false)
+                .setAvailableProviders(providers)
+                .build();
+
+        signInLauncher.launch(signInIntent);
     }
 
     private void handleAfterSignIn() {
@@ -169,16 +256,6 @@ public class StartActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Utils.setStatusOnline(this);
-    }
-
-    private void showConnectedProgress(boolean connected) {
-        if (connected) {
-            binding.progressBar.setVisibility(View.VISIBLE);
-            binding.tvConnecting.setText(R.string.connecting);
-        } else { // Show connection lost
-            binding.progressBar.setVisibility(View.INVISIBLE);
-            binding.tvConnecting.setText(R.string.not_connected);
-        }
     }
 
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {

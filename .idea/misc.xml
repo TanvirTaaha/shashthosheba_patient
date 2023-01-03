@@ -4,9 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.171875" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rounded_rect_with_tint_bg.xml" value="0.113" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rounded_rectangle_bg.xml" value="0.171" />
         <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_intermediary_details.xml" value="0.21105072463768115" />
         <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_prescription_create.xml" value="0.171875" />
         <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_prescription_list.xml" value="0.25" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_start.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/ic_logout.xml" value="0.263" />
         <entry key="app/src/main/res/drawable/rounded_rectangle_bg.xml" value="0.145" />
         <entry key="app/src/main/res/layout/activity_create_meeting.xml" value="0.171875" />

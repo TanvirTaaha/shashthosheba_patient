@@ -13,4 +13,10 @@
     <string name="save">Save</string>
     <string name="add_prescription">Add prescription</string>
     <string name="not_connected">Not connected</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_with_your_doctor_account">Sign in with your Doctor account</string>
+    <string name="this_email_and_password_does_not_match">This email and password does not match.</string>
+    <string name="too_many_retries">Too many retries, try again after a while</string>
 </resources>
