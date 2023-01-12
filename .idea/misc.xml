@@ -3,13 +3,35 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.2966485507246377" />
+        <entry key="../../../Library/Android/sdk/platforms/android-32/data/res/drawable/list_selector_background.xml" value="0.1" />
         <entry key="../../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.171875" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.135" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/ic_key_48px.xml" value="0.135" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/ic_logout.xml" value="0.135" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/ic_round_format_list_bulleted_24.xml" value="0.1285" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/image_view_circle_bg.xml" value="0.1" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rect_selector.xml" value="0.1" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rounded_rect_bg_selector.xml" value="0.1" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rounded_rect_bg_selector_marked.xml" value="0.1555" />
         <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rounded_rect_with_tint_bg.xml" value="0.113" />
         <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rounded_rectangle_bg.xml" value="0.171" />
-        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_intermediary_details.xml" value="0.21105072463768115" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rounded_rectangle_bg_selected.xml" value="0.1025" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/drawable/rounded_rectangle_without_border.xml" value="0.103" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_chamber_doctor.xml" value="0.335" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_change_password.xml" value="0.17727272727272728" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_edit_profile.xml" value="0.18840579710144928" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_intermediary_details.xml" value="0.25" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_intermediary_list.xml" value="0.18220338983050846" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_main.xml" value="0.1968503937007874" />
         <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_prescription_create.xml" value="0.171875" />
         <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_prescription_list.xml" value="0.25" />
-        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_start.xml" value="0.1" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_profile.xml" value="0.335" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/activity_start.xml" value="0.25" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/chamber_member_list_item.xml" value="0.17083333333333334" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/rcv_chamber_member_list_item.xml" value="0.375" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/rcv_intermediary_item.xml" value="0.29257246376811596" />
+        <entry key="../shasthosheba_doctor/app/src/main/res/layout/rcv_intermediary_patient_item.xml" value="0.171875" />
         <entry key="app/src/main/res/drawable/ic_logout.xml" value="0.263" />
         <entry key="app/src/main/res/drawable/rounded_rectangle_bg.xml" value="0.145" />
         <entry key="app/src/main/res/layout/activity_create_meeting.xml" value="0.171875" />
@@ -41,7 +63,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.171875" />
+        <option name="scale" value="0.375" />
       </ProjectState>
     </option>
   </component>

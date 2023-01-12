@@ -1,4 +1,4 @@
-package com.shasthosheba.doctor.prescription;
+package com.shasthosheba.doctor.ui.prescription;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +22,7 @@ import com.shasthosheba.doctor.databinding.RcvPresTitleItemBinding;
 import com.shasthosheba.doctor.model.Intermediary;
 import com.shasthosheba.doctor.model.Patient;
 import com.shasthosheba.doctor.model.Prescription;
+import com.shasthosheba.doctor.repo.Repository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +37,6 @@ public class PrescriptionListActivity extends AppCompatActivity {
 
     private ActivityPrescriptionListBinding binding;
     private Patient patient;
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private PrescriptionTitleAdapter adapter;
 
     private String intermediaryId;
@@ -83,7 +83,7 @@ public class PrescriptionListActivity extends AppCompatActivity {
                     .putExtra(IntentTags.PRESC_PATIENT.tag, new Gson().toJson(patient))
                     .putExtra(IntentTags.PRESC_INTERMEDIARY_OBJ.tag, new Gson().toJson(intermediary)));
         });
-        firestore.collection(PublicVariables.INTERMEDIARY_KEY).document(intermediaryId).get()
+        Repository.getFireStore().collection(PublicVariables.INTERMEDIARY_KEY).document(intermediaryId).get()
                 .addOnSuccessListener(
                         documentSnapshot -> {
                             intermediary = documentSnapshot.toObject(Intermediary.class);
@@ -105,7 +105,7 @@ public class PrescriptionListActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void fetchAllPrescriptions() {
         alertDialog.show();
-        firestore.collection(PublicVariables.PATIENTS_KEY).document(patient.getId()).get()
+        Repository.getFireStore().collection(PublicVariables.PATIENTS_KEY).document(patient.getId()).get()
                 .addOnSuccessListener(documentSnapshotPatient -> {
                     List<String> prescriptionIds = Objects.requireNonNull(documentSnapshotPatient.toObject(Patient.class)).getPrescriptionIds();
                     if (prescriptionIds == null || prescriptionIds.isEmpty()) {
@@ -122,7 +122,7 @@ public class PrescriptionListActivity extends AppCompatActivity {
                     Timber.d("adapter cleared:%s", adapter.getItemCount());
                     for (String presId : prescriptionIds) {
                         Timber.d("prescription id list:%s", prescriptionIds);
-                        firestore.collection(PublicVariables.PRESCRIPTION_KEY).document(presId).get()
+                        Repository.getFireStore().collection(PublicVariables.PRESCRIPTION_KEY).document(presId).get()
                                 .addOnSuccessListener(documentSnapshot -> {
                                     Prescription fetchedPrescription = documentSnapshot.toObject(Prescription.class);
                                     Timber.d("fetched prescription:%s", fetchedPrescription);

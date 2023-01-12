@@ -6,20 +6,16 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.giphy.sdk.core.models.BottleData;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shasthosheba.doctor.BuildConfig;
 import com.shasthosheba.doctor.R;
-import com.shasthosheba.doctor.TagTree;
 import com.shasthosheba.doctor.model.User;
 import com.shasthosheba.doctor.repo.Repository;
+import com.shasthosheba.doctor.util.TagTree;
 
 import java.lang.ref.WeakReference;
 
@@ -46,8 +42,8 @@ public class App extends Application {
             Timber.plant(new TagTree(getString(R.string.app_name), true));
         }
         FirebaseApp.initializeApp(getApplicationContext());
-        DatabaseReference conRef = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB).getReference(".info/connected");
-        DatabaseReference dataRef = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB).getReference(PublicVariables.DOCTOR_KEY);
+        DatabaseReference conRef = Repository.getFirebaseDatabase().getReference(".info/connected");
+        DatabaseReference dataRef = Repository.getFirebaseDatabase().getReference(PublicVariables.DOCTOR_KEY);
         PreferenceManager preferenceManager = new PreferenceManager(getApplicationContext());
         conRef.addValueEventListener(new ValueEventListener() {//Moved from Utils.setStatusOnline to here because need to be done once
             @Override
@@ -56,7 +52,7 @@ public class App extends Application {
                 boolean connected = Boolean.TRUE.equals(snapshot.getValue(Boolean.class));
                 if (preferenceManager.getUser() != null && !TextUtils.isEmpty(preferenceManager.getUser().getuId())) {
                     User user = preferenceManager.getUser();
-                    user.setStatus("offline");
+                    user.setStatus(PublicVariables.USER_STATUS_ONLINE);
                     dataRef.child(user.getuId()).onDisconnect().setValue(user);
                 }
                 preferenceManager.setConnected(connected);

@@ -1,4 +1,4 @@
-package com.shasthosheba.doctor.prescription;
+package com.shasthosheba.doctor.ui.prescription;
 
 import androidx.appcompat.app.AppCompatActivity;
 

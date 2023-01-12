@@ -1,4 +1,4 @@
-package com.shasthosheba.doctor.intermediary;
+package com.shasthosheba.doctor.ui.intermediary;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,7 +14,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.shasthosheba.doctor.StartActivity;
+import com.shasthosheba.doctor.repo.Repository;
+import com.shasthosheba.doctor.ui.StartActivity;
 import com.shasthosheba.doctor.app.PreferenceManager;
 import com.shasthosheba.doctor.app.PublicVariables;
 import com.shasthosheba.doctor.databinding.ActivityIntermediaryListBinding;
@@ -24,7 +25,6 @@ import timber.log.Timber;
 
 public class IntermediaryListActivity extends AppCompatActivity {
 
-    FirebaseDatabase rtDB = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB);
     private ActivityIntermediaryListBinding binding;
 
     @Override
@@ -38,7 +38,7 @@ public class IntermediaryListActivity extends AppCompatActivity {
         binding.rcvIntermediaryList.setAdapter(adapter);
         binding.rcvIntermediaryList.setLayoutManager(new LinearLayoutManager(this));
 
-        DatabaseReference dataRefIntermediary = rtDB.getReference(PublicVariables.INTERMEDIARY_KEY);
+        DatabaseReference dataRefIntermediary = Repository.getFirebaseDatabase().getReference(PublicVariables.INTERMEDIARY_KEY);
         dataRefIntermediary.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -60,8 +60,8 @@ public class IntermediaryListActivity extends AppCompatActivity {
 
         binding.ibSignOut.setOnClickListener(v -> {
             User user = new PreferenceManager(IntermediaryListActivity.this).getUser();
-            user.setStatus("offline");
-            rtDB.getReference(PublicVariables.DOCTOR_KEY).child(user.getuId()).setValue(user)
+            user.setStatus(PublicVariables.USER_STATUS_ONLINE);
+            Repository.getFirebaseDatabase().getReference(PublicVariables.DOCTOR_KEY).child(user.getuId()).setValue(user)
                     .addOnCompleteListener(task -> {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(IntermediaryListActivity.this, StartActivity.class));

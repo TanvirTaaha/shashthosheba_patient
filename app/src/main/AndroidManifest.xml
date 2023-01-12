@@ -16,28 +16,54 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Patient.NoActionBar"
+        android:theme="@style/Theme.Doctor.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".prescription.PrescriptionViewActivity"
+            android:name=".ui.profile.EditProfileActivity"
+            android:exported="false"
+            android:label="@string/edit_profile"
+            android:theme="@style/Theme.Doctor"
+            android:parentActivityName=".ui.profile.ProfileActivity" />
+        <activity
+            android:name=".ui.chamber.ChamberActivityDoctor"
+            android:exported="false"
+            android:label="@string/chamber"
+            android:theme="@style/Theme.Doctor"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.ChangePasswordActivity"
+            android:exported="false"
+            android:label="@string/change_password"
+            android:theme="@style/Theme.Doctor"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false"
+            android:label="@string/profile"
+            android:theme="@style/Theme.Doctor"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".prescription.PrescriptionCreateActivity"
+            android:name=".ui.prescription.PrescriptionViewActivity"
             android:exported="false" />
         <activity
-            android:name=".prescription.PrescriptionListActivity"
+            android:name=".ui.prescription.PrescriptionCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".intermediary.IntermediaryDetailsActivity"
+            android:name=".ui.prescription.PrescriptionListActivity"
             android:exported="false" />
         <activity
-            android:name=".intermediary.IntermediaryListActivity"
+            android:name=".ui.intermediary.IntermediaryDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".meeting.MeetingActivity"
-            android:exported="false" />
+            android:name=".ui.intermediary.IntermediaryListActivity"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".ui.meeting.MeetingActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
-            android:name=".StartActivity"
+            android:name=".ui.StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

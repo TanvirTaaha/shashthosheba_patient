@@ -1,4 +1,4 @@
-package com.shasthosheba.doctor;
+package com.shasthosheba.doctor.util;
 
 import org.jetbrains.annotations.NotNull;
 

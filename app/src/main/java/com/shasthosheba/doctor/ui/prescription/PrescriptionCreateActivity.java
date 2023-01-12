@@ -1,4 +1,4 @@
-package com.shasthosheba.doctor.prescription;
+package com.shasthosheba.doctor.ui.prescription;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.core.Repo;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
@@ -24,6 +25,7 @@ import com.shasthosheba.doctor.model.Intermediary;
 import com.shasthosheba.doctor.model.Patient;
 import com.shasthosheba.doctor.model.Prescription;
 import com.shasthosheba.doctor.model.User;
+import com.shasthosheba.doctor.repo.Repository;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +42,6 @@ public class PrescriptionCreateActivity extends AppCompatActivity {
     private PreferenceManager preferenceManager;
     private AlertDialog alertDialog;
 
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +123,7 @@ public class PrescriptionCreateActivity extends AppCompatActivity {
             prescription.setTests(testAdapter.mList);
 
 
-            firestore.collection(PublicVariables.PRESCRIPTION_KEY).add(prescription)
+            Repository.getFireStore().collection(PublicVariables.PRESCRIPTION_KEY).add(prescription)
                     .addOnSuccessListener(documentReference -> {
                         Timber.d("prescription:%s", prescription);
                         Timber.d("added prescription without id:%s", documentReference.getId());
@@ -140,7 +141,7 @@ public class PrescriptionCreateActivity extends AppCompatActivity {
 //                                        finish();
 //                                    })
 //                                    .addOnFailureListener(Timber::e);
-                            firestore.collection(PublicVariables.PATIENTS_KEY).document(patient.getId())
+                            Repository.getFireStore().collection(PublicVariables.PATIENTS_KEY).document(patient.getId())
                                     .update(PublicVariables.PATIENT_PRESCRIPTION_IDs, FieldValue.arrayUnion(prescription.getId()))
                                     .addOnSuccessListener(unused12 -> {
                                         Timber.d("Patient %s, updated with presc id:%s",

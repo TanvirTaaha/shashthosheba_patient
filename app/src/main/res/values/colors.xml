@@ -9,4 +9,10 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="rcv_item_tint">#25000000</color>
+
+    <color name="color_primary">#1B224F</color>
+    <color name="color_primary_variant">#5663A6</color>
+    <color name="color_secondary">#8CDEFB</color>
+    <color name="color_secondary_variant">#5FD0FF</color>
+    <color name="color_green_opaque">#C8E6C9</color>
 </resources>

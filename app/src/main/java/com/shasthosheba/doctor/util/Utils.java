@@ -41,7 +41,7 @@ public class Utils {
 //            public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                Timber.d(".info/connected:%s", snapshot.getValue());
 //                if (Boolean.FALSE.equals(snapshot.getValue(Boolean.class))) { //NOT CONNECTED
-//                    user.setStatus("offline");
+//                    user.setStatus(PublicVariables.USER_STATUS_ONLINE);
 //                    dataRef.child(user.getuId()).onDisconnect().setValue(user);
 //                }
 //                new PreferenceManager(context).setConnected(Boolean.TRUE.equals(snapshot.getValue(Boolean.class)));

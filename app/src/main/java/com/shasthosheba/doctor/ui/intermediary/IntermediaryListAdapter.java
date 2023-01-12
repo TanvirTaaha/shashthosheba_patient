@@ -1,4 +1,4 @@
-package com.shasthosheba.doctor.intermediary;
+package com.shasthosheba.doctor.ui.intermediary;
 
 import android.content.Context;
 import android.content.Intent;
@@ -58,28 +58,28 @@ public class IntermediaryListAdapter extends RecyclerView.Adapter<IntermediaryLi
 
     @Override
     public void onBindViewHolder(@NonNull DoctorViewHolder holder, int position) {
-        User user = mList.get(position);
-        holder.binding.tvName.setText(user.getName());
-        holder.binding.tvStatus.setText(user.getStatus());
+        User intermediaryObj = mList.get(position);
+        holder.binding.tvName.setText(intermediaryObj.getName());
+        holder.binding.tvStatus.setText(intermediaryObj.getStatus());
         int colorInt;
-        if (user.getStatus().equals("online")) {
+        if (intermediaryObj.getStatus().equals("online")) {
             colorInt = android.R.color.holo_green_light;
         } else {
             colorInt = android.R.color.holo_red_light;
         }
         holder.binding.tvStatus.setTextColor(ResourcesCompat.getColor(mContext.getResources(), colorInt, mContext.getTheme()));
         holder.binding.getRoot().setOnClickListener(v -> {
-            if (user.getStatus().equals("online")) {
+            if (intermediaryObj.getStatus().equals("online")) {
                 mContext.startActivity(new Intent(mContext, IntermediaryDetailsActivity.class)
-                        .putExtra(IntentTags.INTERMEDIARY_NAME.tag, user.getName())
-                        .putExtra(IntentTags.INTERMEDIARY_UID.tag, user.getuId())
-                        .putExtra(IntentTags.INTERMEDIARY_STATUS.tag, user.getStatus())
+                        .putExtra(IntentTags.INTERMEDIARY_NAME.tag, intermediaryObj.getName())
+                        .putExtra(IntentTags.INTERMEDIARY_UID.tag, intermediaryObj.getuId())
+                        .putExtra(IntentTags.INTERMEDIARY_STATUS.tag, intermediaryObj.getStatus())
                         .putExtra(IntentTags.INTERMEDIARY_CALL_ENABLED.tag, true));
             } else {
                 mContext.startActivity(new Intent(mContext, IntermediaryDetailsActivity.class)
-                        .putExtra(IntentTags.INTERMEDIARY_NAME.tag, user.getName())
-                        .putExtra(IntentTags.INTERMEDIARY_UID.tag, user.getuId())
-                        .putExtra(IntentTags.INTERMEDIARY_STATUS.tag, user.getStatus())
+                        .putExtra(IntentTags.INTERMEDIARY_NAME.tag, intermediaryObj.getName())
+                        .putExtra(IntentTags.INTERMEDIARY_UID.tag, intermediaryObj.getuId())
+                        .putExtra(IntentTags.INTERMEDIARY_STATUS.tag, intermediaryObj.getStatus())
                         .putExtra(IntentTags.INTERMEDIARY_CALL_ENABLED.tag, false));
 //                Toast.makeText(mContext, "This org is not online right now", Toast.LENGTH_LONG).show();
             }

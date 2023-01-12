@@ -1,4 +1,4 @@
-package com.shasthosheba.doctor.intermediary;
+package com.shasthosheba.doctor.ui.intermediary;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shasthosheba.doctor.app.IntentTags;
 import com.shasthosheba.doctor.databinding.RcvIntermediaryPatientItemBinding;
 import com.shasthosheba.doctor.model.Patient;
-import com.shasthosheba.doctor.prescription.PrescriptionListActivity;
+import com.shasthosheba.doctor.ui.prescription.PrescriptionListActivity;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

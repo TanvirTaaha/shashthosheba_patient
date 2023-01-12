@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/doctor_background_low_opacity"
-    tools:context=".intermediary.IntermediaryDetailsActivity">
+    tools:context=".ui.intermediary.IntermediaryDetailsActivity">
 
     <Button
         android:id="@+id/btn_video_call"
@@ -14,7 +14,8 @@
         android:layout_marginVertical="16dp"
         android:layout_marginStart="32dp"
         android:drawableLeft="@android:drawable/presence_video_online"
-        android:text="@string/video" />
+        android:text="@string/video"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_audio_call"
@@ -24,7 +25,8 @@
         android:layout_marginVertical="16dp"
         android:layout_marginEnd="32dp"
         android:drawableLeft="@android:drawable/presence_audio_online"
-        android:text="@string/audio" />
+        android:text="@string/audio"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -37,18 +39,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_video_call"
-        android:layout_marginBottom="8dp"
         android:gravity="center"
+        android:padding="8dp"
         android:paddingHorizontal="16dp"
         android:textColor="@android:color/primary_text_light"
         android:textSize="24sp"
         tools:text="John" />
 
+    <TextView
+        android:id="@+id/tv_patients"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_intermediary_name"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/patients"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/v_bar"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/tv_patients"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/darker_gray" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_intermediary_patients_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_intermediary_name"
+        android:layout_below="@id/v_bar"
         android:layout_marginHorizontal="16dp"
         tools:listitem="@layout/rcv_intermediary_patient_item" />
 </RelativeLayout>

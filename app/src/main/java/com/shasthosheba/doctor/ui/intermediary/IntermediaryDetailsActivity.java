@@ -1,4 +1,4 @@
-package com.shasthosheba.doctor.intermediary;
+package com.shasthosheba.doctor.ui.intermediary;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +19,7 @@ import com.shasthosheba.doctor.model.Call;
 import com.shasthosheba.doctor.model.Intermediary;
 import com.shasthosheba.doctor.model.Patient;
 import com.shasthosheba.doctor.model.User;
+import com.shasthosheba.doctor.repo.Repository;
 
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
@@ -33,9 +34,9 @@ import timber.log.Timber;
 public class IntermediaryDetailsActivity extends AppCompatActivity {
 
     private ActivityIntermediaryDetailsBinding binding;
-    private DatabaseReference callRef = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB).getReference("call");
+    private DatabaseReference callRef = Repository.getFirebaseDatabase().getReference("call");
     private PreferenceManager preferenceManager;
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private Intermediary mIntermediary;
 
     private PatientListAdapter adapter;
     private boolean fetchDone = true;
@@ -51,7 +52,7 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
         binding.rcvIntermediaryPatientsList.setLayoutManager(new LinearLayoutManager(this));
         binding.rcvIntermediaryPatientsList.setAdapter(adapter);
 
-        if (!preferenceManager.isConnected()) {
+        if (!Repository.getInstance().isConnected()) {
             Toast.makeText(this, "Not connected to server", Toast.LENGTH_LONG).show();
             Timber.e("firebase is not connected");
             finish();
@@ -61,7 +62,7 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
             adapter.setIntermediaryId(intermediaryId);
             binding.tvIntermediaryName.setText(getIntent().getStringExtra(IntentTags.INTERMEDIARY_NAME.tag));
             showCallButtons(getIntent().getBooleanExtra(IntentTags.INTERMEDIARY_CALL_ENABLED.tag, false));
-            firestore.collection(PublicVariables.INTERMEDIARY_KEY).document(intermediaryId)
+            Repository.getFireStore().collection(PublicVariables.INTERMEDIARY_KEY).document(intermediaryId)
                     .addSnapshotListener((value, error) -> {
                         if (error != null) {
                             Timber.e(error);
@@ -83,7 +84,7 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    //Separated in a method just to reduce clutter
+    // Separated in a method just to reduce clutter
     private void fetchPatients(Intermediary intermediary) {
         assert intermediary != null;
         if (intermediary.getPatients() != null && !intermediary.getPatients().isEmpty()) {
@@ -92,7 +93,7 @@ public class IntermediaryDetailsActivity extends AppCompatActivity {
             Timber.i("adapter cleared:%s", adapter.getItemCount());
             for (String id : intermediary.getPatients()) {
                 Timber.d("fetching for patient id:%s", id);
-                firestore.collection(PublicVariables.PATIENTS_KEY).document(id).get()
+                Repository.getFireStore().collection(PublicVariables.PATIENTS_KEY).document(id).get()
                         .addOnSuccessListener(documentSnapshot1 -> {
                             Patient fetchedPatient = documentSnapshot1.toObject(Patient.class);
                             Timber.d("fetched fetchedPatient:%s", fetchedPatient);

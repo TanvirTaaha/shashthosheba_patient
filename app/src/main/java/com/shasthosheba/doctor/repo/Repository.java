@@ -1,5 +1,6 @@
 package com.shasthosheba.doctor.repo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -7,22 +8,39 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.os.Build;
+import android.text.BoringLayout;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.shasthosheba.doctor.app.App;
+import com.shasthosheba.doctor.app.PublicVariables;
+import com.shasthosheba.doctor.model.ChamberMember;
+import com.shasthosheba.doctor.model.DoctorProfile;
+import com.shasthosheba.doctor.model.Intermediary;
+
+import java.util.List;
 
 public final class Repository {
     private static Repository mInstance;
+    private FirebaseDatabase firebaseDatabase;
+    private FirebaseFirestore fireStore;
 
     public static void initialize() {
         mInstance = new Repository();
     }
 
     private Repository() {
+        firebaseDatabase = FirebaseDatabase.getInstance(PublicVariables.FIREBASE_DB);
+        fireStore = FirebaseFirestore.getInstance();
         ConnectivityManager conMan = (ConnectivityManager) App.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         //https://stackoverflow.com/q/25678216
         // https://stackoverflow.com/q/70324348
@@ -70,12 +88,14 @@ public final class Repository {
 
     /**
      * https://stackoverflow.com/a/53243938
+     *
      * @param context Application context
-     * @return  0: No Internet available (maybe on airplane mode, or in the process of joining an wi-fi).
-     *          1: Cellular (mobile data, 3G/4G/LTE whatever).
-     *          2: Wi-fi.
-     *          3: VPN
+     * @return 0: No Internet available (maybe on airplane mode, or in the process of joining an wi-fi).
+     * 1: Cellular (mobile data, 3G/4G/LTE whatever).
+     * 2: Wi-fi.
+     * 3: VPN
      */
+    @SuppressLint("ObsoleteSdkInt")
     @IntRange(from = 0, to = 3)
     public static int getConnectionType(Context context) {
         int result = 0; // Returns connection type. 0: none; 1: mobile data; 2: wifi; 3: vpn
@@ -109,5 +129,48 @@ public final class Repository {
             }
         }
         return result;
+    }
+
+    public static FirebaseFirestore getFireStore() {
+        return mInstance.fireStore;
+    }
+
+    public static FirebaseDatabase getFirebaseDatabase() {
+        return mInstance.firebaseDatabase;
+    }
+
+    public LiveData<DataOrError<List<Intermediary>, FirebaseFirestoreException>> getAllIntermediaries() {
+        return new FirestoreCollectionLiveData<>(fireStore.collection(PublicVariables.INTERMEDIARY_KEY), Intermediary.class);
+    }
+
+    private final MutableLiveData<DataOrError<Boolean, Exception>> setDocProfileLD = new MutableLiveData<>();
+
+    public LiveData<DataOrError<Boolean, Exception>> setDoctorProfile(DoctorProfile doctorProfile) {
+        fireStore.collection(PublicVariables.DOCTOR_KEY).document(doctorProfile.getDocId()).set(doctorProfile)
+                .addOnCompleteListener(task ->
+                        setDocProfileLD.postValue(new DataOrError<>(
+                                task.isSuccessful(), task.getException())));
+        return setDocProfileLD;
+    }
+
+    private FirestoreDocumentLiveData<DoctorProfile> getDoctorProfileLD;
+    private String doctorId;
+
+    public LiveData<DataOrError<DoctorProfile, FirebaseFirestoreException>> getDoctorProfile(String docId) {
+        if (this.doctorId == null || !this.doctorId.equals(docId)) {
+            this.doctorId = docId;
+            getDoctorProfileLD = new FirestoreDocumentLiveData<>(
+                    fireStore.collection(PublicVariables.DOCTOR_KEY).document(docId),
+                    DoctorProfile.class);
+        }
+        return getDoctorProfileLD;
+    }
+
+    private FirebaseRealtimeListLiveData<ChamberMember> allChamberMembersLD;
+    public LiveData<DataOrError<List<ChamberMember>, DatabaseException>> getAllChamberMembers() {
+        if (allChamberMembersLD == null) {
+            allChamberMembersLD = new FirebaseRealtimeListLiveData<>(firebaseDatabase.getReference(PublicVariables.CHAMBER_KEY), ChamberMember.class);
+        }
+        return allChamberMembersLD;
     }
 }
