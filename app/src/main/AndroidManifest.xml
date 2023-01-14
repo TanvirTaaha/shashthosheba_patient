@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.shasthosheba.doctor">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -22,26 +21,26 @@
             android:name=".ui.profile.EditProfileActivity"
             android:exported="false"
             android:label="@string/edit_profile"
-            android:theme="@style/Theme.Doctor"
-            android:parentActivityName=".ui.profile.ProfileActivity" />
+            android:parentActivityName=".ui.profile.ProfileActivity"
+            android:theme="@style/Theme.Doctor" />
         <activity
             android:name=".ui.chamber.ChamberActivityDoctor"
             android:exported="false"
             android:label="@string/chamber"
-            android:theme="@style/Theme.Doctor"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.Doctor" />
         <activity
             android:name=".ui.ChangePasswordActivity"
             android:exported="false"
             android:label="@string/change_password"
-            android:theme="@style/Theme.Doctor"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.Doctor" />
         <activity
             android:name=".ui.profile.ProfileActivity"
             android:exported="false"
             android:label="@string/profile"
-            android:theme="@style/Theme.Doctor"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.Doctor" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="false" />

@@ -20,16 +20,18 @@ public class ChamberMember extends BaseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ChamberMember that = (ChamberMember) o;
+        ChamberMember member = (ChamberMember) o;
 
-        if (!intermediaryId.equals(that.intermediaryId)) return false;
-        return Objects.equals(name, that.name);
+        if (timestamp != member.timestamp) return false;
+        if (!intermediaryId.equals(member.intermediaryId)) return false;
+        return name.equals(member.name);
     }
 
     @Override
     public int hashCode() {
         int result = intermediaryId.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         return result;
     }
 

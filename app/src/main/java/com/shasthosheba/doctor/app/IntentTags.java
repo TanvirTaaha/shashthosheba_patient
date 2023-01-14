@@ -19,6 +19,8 @@ public enum IntentTags {
     PRESC_DOC("presc_doctor"),
     PRESC_INTERMEDIARY_OBJ("presc_intermediary"),
     PRESCRIPTION_OBJ("prescription_object"),
+
+    CHAMBER_MEMBER_OBJ("chamber_member_obj"),
     ;
 
     public final String tag;

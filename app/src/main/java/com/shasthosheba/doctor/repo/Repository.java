@@ -17,6 +17,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +29,8 @@ import com.shasthosheba.doctor.model.DoctorProfile;
 import com.shasthosheba.doctor.model.Intermediary;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public final class Repository {
     private static Repository mInstance;
@@ -172,5 +175,36 @@ public final class Repository {
             allChamberMembersLD = new FirebaseRealtimeListLiveData<>(firebaseDatabase.getReference(PublicVariables.CHAMBER_KEY), ChamberMember.class);
         }
         return allChamberMembersLD;
+    }
+
+    public LiveData<DataOrError<Boolean, Exception>> removeChamberMember(String uId) {
+        MutableLiveData<DataOrError<Boolean, Exception>> dataOrErrorLD = new MutableLiveData<>();
+        firebaseDatabase.getReference(PublicVariables.CHAMBER_KEY).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DataSnapshot snap : task.getResult().getChildren()) {
+                    try {
+                        ChamberMember chamMem = snap.getValue(ChamberMember.class);
+                        if (chamMem != null && chamMem.getIntermediaryId().equals(uId)) {
+                            deleteChamberMember(
+                                    Long.toString(chamMem.getTimestamp()),
+                                    task1 -> dataOrErrorLD.postValue(
+                                            new DataOrError<>(task1.isSuccessful(), task1.getException())));
+                        }
+                    } catch (Exception e) {
+                        if ((e instanceof DatabaseException) != false) {
+                            Timber.w("Cannot convert:key:%s", snap.getKey());
+                        } else {
+                            Timber.e(e);
+                        }
+                    }
+                }
+            }
+        });
+        return dataOrErrorLD;
+    }
+
+    private void deleteChamberMember(String timestamp, OnCompleteListener<Void> completeListener) {
+        firebaseDatabase.getReference(PublicVariables.CHAMBER_KEY).child(timestamp).removeValue()
+                .addOnCompleteListener(completeListener);
     }
 }

@@ -1,6 +1,6 @@
 package com.shasthosheba.doctor.model;
 
-public class Call {
+public class Call extends BaseModel{
     private String wants;
     private boolean video;
     private String room;
